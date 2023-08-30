@@ -1,18 +1,19 @@
 package org.example;
 import java.util.List;
+import java.util.Map;
 
 public class CityFinder {
-    public static String cityFinderForLastLetter (List<String> words, char lastLetter) {
-        String returnSity = "";
+    public static String cityFinderForLastLetter(Map<Character, List<String>> citiesMap, char lastLetter) {
+        String returnCity = "";
 
-        for (String word: words) {
-            String toLowerWord = word.toLowerCase();
-            if (returnSity.isEmpty()) {
-                if (lastLetter == toLowerWord.charAt(0)) {
-                    returnSity += word;
-                }
-            }
+        char upperCaseLastLetter = Character.toUpperCase(lastLetter);
+        List<String> citiesList = citiesMap.get(upperCaseLastLetter);
+
+        if (citiesList != null && !citiesList.isEmpty()) {
+            returnCity = citiesList.get(0);
         }
-        return returnSity;
+
+        return returnCity;
     }
 }
+
