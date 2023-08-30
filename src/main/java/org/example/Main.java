@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +24,14 @@ public class Main {
 
         //тут работа с файлом
 
-        Map<Character, List<String>> citiesFromFile = CitiesListFromWikipedia.readCitiesNameFromFile("src/main/resources/cities.json");
+        Map<Character, List<String>> cities;
+        try {
+            cities = CitiesListFromWikipedia.readCitiesNameFromFile("src/main/resources/cities.json");
+        } catch (FileNotFoundException exception) {
+            cities = CitiesListFromWikipedia.getCitiesName("src/main/resources/cities.json");
+        }
 
-        String result = CityFinder.cityFinderForLastLetter(citiesFromFile, lastLetter);
+        String result = CityFinder.cityFinderForLastLetter(cities, lastLetter);
         System.out.println(result);
     }
     }
