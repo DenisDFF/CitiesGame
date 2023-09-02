@@ -7,23 +7,25 @@ public class BlackList {
 
     //Якщо міста немає в Blacklist, метод повертає false і додає місто в Blacklist
     public boolean checkCityInBlackList (String cityName){
-        char firstLetter = cityName.charAt(0);
-        ArrayList<String> newList = blackMap.get(firstLetter);
+        char firstLetter = Character.toUpperCase(cityName.charAt(0));
+        ArrayList<String> citiesList = blackMap.get(firstLetter);
 
-        if(newList == null){
-            newList = new ArrayList<>();
-            blackMap.put(firstLetter,newList);
+        if (citiesList == null) {
+            citiesList = new ArrayList<>();
+            blackMap.put(firstLetter, citiesList);
+        } else {
+            for (String currentCity : citiesList) {
+                if (currentCity.equalsIgnoreCase(cityName)) {
+                    return true;
+                }
+            }
         }
 
-        boolean result = newList.contains(cityName);
-
-        if(!result){
-            newList.add(cityName);
-        }
-        return result;
+        citiesList.add(cityName);
+        return false;
     }
 
-
-
-
+    public void restart() {
+        blackMap = new HashMap<>();
+    }
 }
