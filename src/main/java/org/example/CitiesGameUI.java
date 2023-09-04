@@ -27,22 +27,34 @@ public class CitiesGameUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Гра \"Міста\"");
+        primaryStage.setTitle("Города");
 
-        userInput = new TextField();
-        userInput.setPromptText("Введіть назву міста");
+        Label label = new Label("Введите название города:");
+        Label ruleLabel = new Label();
+        TextField cityInput = new TextField();
+        Button enterButton = new Button("Ввести");
+        Button rulesButton = new Button("Правила");
+        Button restartButton = new Button("Заново");
 
-        submitButton = new Button("Зробити хід");
-        submitButton.setOnAction(e -> handleSubmit());
+        enterButton.setOnAction(e -> {
+            String cityName = cityInput.getText();
+            //тут треба додати логіку обробки міста
+        });
 
-        messageLabel = new Label("Добро пожаловать в игру \"Міста\"!");
+        rulesButton.setOnAction(e -> {
+            //тут правила
+            ruleLabel.setText("Правила\n1. Щоб закінчити гру введіть 'здаюсь'.\n2. Ви переможете, якщо комп'ютер не матиме міста для відповіді. Доступні тільки всі міста України.\n3. Щоб почати спочатку введіть 'заново'.\nВперед!!!");
+        });
 
-        VBox vbox = new VBox(10);
-        vbox.setPadding(new Insets(10));
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(userInput, submitButton, messageLabel);
+        restartButton.setOnAction(e -> {
+            // тут перезапуск
+        });
 
-        Scene scene = new Scene(vbox, 300, 200);
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+        layout.getChildren().addAll(label, cityInput, enterButton, rulesButton, restartButton, ruleLabel);
+
+        Scene scene = new Scene(layout, 700, 400);
         primaryStage.setScene(scene);
 
         primaryStage.show();
