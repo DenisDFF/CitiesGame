@@ -30,9 +30,9 @@ public class CitiesGameUI extends Application {
         primaryStage.setTitle("Гра \"Міста\"");
 
         userInput = new TextField();
-        userInput.setPromptText("Введіть город");
+        userInput.setPromptText("Введіть назву міста");
 
-        submitButton = new Button("Отправить");
+        submitButton = new Button("Зробити хід");
         submitButton.setOnAction(e -> handleSubmit());
 
         messageLabel = new Label("Добро пожаловать в игру \"Міста\"!");
@@ -50,6 +50,5 @@ public class CitiesGameUI extends Application {
 
     private void handleSubmit() {
         String userCity = userInput.getText().trim();
-
     }
 }

@@ -2,7 +2,6 @@ package org.example;
 
 import org.example.blacklist.BlackList;
 
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -10,10 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main {
-
-    private TextField userInput;
-    private TextField messageLabel;
-
     private BlackList blackList;
     private char lastLetter;
 
@@ -21,8 +16,6 @@ public class Main {
     private Map<Character, List<String>> computerCities;
 
     public Main() throws IOException {
-        userInput = new TextField();
-        messageLabel = new TextField();
         blackList = new BlackList();
         try {
             cities = CitiesListFromWikipedia.readCitiesNameFromFile("src/main/resources/cities.json");
