@@ -8,14 +8,14 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Game {
+public class Main {
     private BlackList blackList;
     private char lastLetter;
 
     private Map<Character, List<String>> cities;
     private Map<Character, List<String>> computerCities;
 
-    public Game() throws IOException {
+    public Main() throws IOException {
         blackList = new BlackList();
         try {
             cities = CitiesListFromWikipedia.readCitiesNameFromFile("src/main/resources/cities.json");
@@ -113,14 +113,14 @@ public class Game {
         lastLetter = getLastLetter(city);
     }
 
-    public void restart() {
+    private void restart() {
         lastLetter = '\u0000';
         computerCities = copyCities(cities);
         blackList.restart();
     }
 
     public static void main(String[] args) throws IOException {
-        Game game = new Game();
+        Main game = new Main();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("---------------------------------------------   Гра \"Міста\"   ---------------------------------------------------");
