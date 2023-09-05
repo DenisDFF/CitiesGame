@@ -110,7 +110,6 @@ public class CitiesGameUI extends Application {
         rulesButton.setFont(boldFont);
         rulesButton.setStyle("-fx-background-color: #008CBA; -fx-text-fill: white;");
         rulesButton.setOnAction(e -> {
-            //тут правила
             rulesLabel.setText("Правила\n1. Щоб закінчити гру введіть 'здаюсь'.\n2. Ви переможете, якщо комп'ютер не матиме міста для відповіді. Доступні тільки всі міста України.\n3. Щоб почати спочатку введіть 'заново'.\nВперед!!!");
         });
 
