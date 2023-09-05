@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -124,11 +123,7 @@ public class CitiesGameUI extends Application {
 
         buttonBox.getChildren().addAll(rulesButton, restartButton);
 
-
         labelForMessage = new Label("");
-        Label label = new Label("Введите название города:");
-
-
         mainLayout.getChildren().addAll(labelForMessage, layoutDescriptionAndValue, submitButton, buttonBox, rulesLabel);
 
         Scene scene = new Scene(mainLayout, 700, 400);
