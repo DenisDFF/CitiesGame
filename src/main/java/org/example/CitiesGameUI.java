@@ -1,7 +1,16 @@
 package org.example;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +36,9 @@ public class CitiesGameUI extends Application {
     private Label labelComputer;
     private Label labelForComputerAnswer;
     private Button submitButton;
+    private Label rulesLabel;
+    private Button rulesButton;
+    private Button restartButton;
     private boolean finished = false;
     private Alert alert;
 
@@ -43,7 +55,9 @@ public class CitiesGameUI extends Application {
         mainWindow = primaryStage;
         primaryStage.setTitle("Гра \"Міста\"");
 
-        VBox mainLayout = new VBox(30);
+        Font boldFont = Font.font("Arial", FontWeight.BOLD, 14);
+
+        VBox mainLayout = new VBox(40);
         mainLayout.setAlignment(Pos.CENTER);
 
         HBox layoutDescriptionAndValue = new HBox(20);
@@ -52,8 +66,9 @@ public class CitiesGameUI extends Application {
         VBox layoutDescription = new VBox(20);
         layoutDescription.setAlignment(Pos.CENTER_RIGHT);
         labelYou = new Label("Ви:");
+        labelYou.setFont(boldFont);
         labelComputer = new Label("Комп'ютер:");
-
+        labelComputer.setFont(boldFont);
         layoutDescription.getChildren().addAll(labelYou, labelComputer);
 
         VBox layoutValue = new VBox(20);
@@ -61,6 +76,8 @@ public class CitiesGameUI extends Application {
 
         userInput = new TextField();
         userInput.setPromptText("Введіть назву міста");
+        userInput.setPadding(new Insets(7, 8, 7, 8));
+        userInput.setStyle("-fx-font-size: 16px");
         userInput.setOnKeyPressed(key -> {
             if (key.getCode() == KeyCode.ENTER) {
                 updateGame();
@@ -70,8 +87,9 @@ public class CitiesGameUI extends Application {
         labelForComputerAnswer = new Label();
         layoutValue.getChildren().addAll(userInput, labelForComputerAnswer);
 
-
         submitButton = new Button("Зробити хід");
+        submitButton.setFont(boldFont);
+        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         submitButton.setOnAction(event -> {
             userInput.requestFocus();
             userInput.selectAll();
@@ -80,14 +98,39 @@ public class CitiesGameUI extends Application {
 
         layoutDescriptionAndValue.getChildren().addAll(layoutDescription, layoutValue);
 
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        rulesLabel = new Label();
+
+        rulesButton = new Button("Правила");
+        rulesButton.setFont(boldFont);
+        rulesButton.setStyle("-fx-background-color: #008CBA; -fx-text-fill: white;");
+        rulesButton.setOnAction(e -> {
+            //тут правила
+            rulesLabel.setText("Правила\n1. Щоб закінчити гру введіть 'здаюсь'.\n2. Ви переможете, якщо комп'ютер не матиме міста для відповіді. Доступні тільки всі міста України.\n3. Щоб почати спочатку введіть 'заново'.\nВперед!!!");
+        });
+
+        restartButton = new Button("Заново");
+        restartButton.setFont(boldFont);
+        restartButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        restartButton.setOnAction(e -> {
+            restart();
+        });
+
+        buttonBox.getChildren().addAll(rulesButton, restartButton);
+
+
         labelForMessage = new Label("");
+        Label label = new Label("Введите название города:");
 
-        mainLayout.getChildren().addAll(labelForMessage, layoutDescriptionAndValue, submitButton);
 
+        mainLayout.getChildren().addAll(labelForMessage, layoutDescriptionAndValue, submitButton, buttonBox, rulesLabel);
 
         Scene scene = new Scene(mainLayout, 700, 400);
-        primaryStage.setScene(scene);
+        scene.getRoot().setStyle("-fx-background-color: #FFFFFF;");
 
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
