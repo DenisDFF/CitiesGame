@@ -63,7 +63,7 @@ public class CitiesGameUI extends Application {
         HBox layoutDescriptionAndValue = new HBox(20);
         layoutDescriptionAndValue.setAlignment(Pos.CENTER);
 
-        VBox layoutDescription = new VBox(20);
+        VBox layoutDescription = new VBox(44);
         layoutDescription.setAlignment(Pos.CENTER_RIGHT);
         labelYou = new Label("Ви:");
         labelYou.setFont(boldFont);
@@ -74,9 +74,11 @@ public class CitiesGameUI extends Application {
         VBox layoutValue = new VBox(20);
         layoutValue.setAlignment(Pos.CENTER_LEFT);
 
+        Insets elementsInsets = new Insets(7, 8, 7, 8);
+
         userInput = new TextField();
         userInput.setPromptText("Введіть назву міста");
-        userInput.setPadding(new Insets(7, 8, 7, 8));
+        userInput.setPadding(elementsInsets);
         userInput.setStyle("-fx-font-size: 16px");
         userInput.setOnKeyPressed(key -> {
             if (key.getCode() == KeyCode.ENTER) {
@@ -85,6 +87,8 @@ public class CitiesGameUI extends Application {
             }
         });
         labelForComputerAnswer = new Label();
+        labelForComputerAnswer.setPadding(elementsInsets);
+        labelForComputerAnswer.setStyle("-fx-font-size: 16px");
         layoutValue.getChildren().addAll(userInput, labelForComputerAnswer);
 
         submitButton = new Button("Зробити хід");
