@@ -38,7 +38,9 @@ public class CitiesGameUI extends Application {
     private Label rulesLabel;
     private Button rulesButton;
     private Button restartButton;
+    private Button finishButton;
     private boolean finished = false;
+    private Font boldFont;
     private Alert alert;
 
     public CitiesGameUI() throws IOException {
@@ -54,22 +56,95 @@ public class CitiesGameUI extends Application {
         mainWindow = primaryStage;
         primaryStage.setTitle("Гра \"Міста\"");
 
-        Font boldFont = Font.font("Arial", FontWeight.BOLD, 14);
+        boldFont = Font.font("Arial", FontWeight.BOLD, 14);
 
+        VBox mainLayout = createMainLayout();
+
+        Scene scene = new Scene(mainLayout, 750, 500);
+        scene.getRoot().setStyle("-fx-background-color: #FFFFFF;");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private VBox createMainLayout() {
         VBox mainLayout = new VBox(40);
         mainLayout.setAlignment(Pos.CENTER);
 
+
+        HBox layoutDescriptionAndValue = createDescriptionAndValueLayout();
+
+        submitButton = new Button("Зробити хід");
+        submitButton.setFont(boldFont);
+        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        submitButton.setOnAction(event -> {
+            userInput.requestFocus();
+            userInput.selectAll();
+            updateGame();
+        });
+
+        HBox buttonBox = createButtonLayout(boldFont);
+
+        labelForMessage = new Label("");
+
+        mainLayout.getChildren().addAll(labelForMessage, layoutDescriptionAndValue, submitButton, buttonBox, rulesLabel);
+        return mainLayout;
+    }
+
+    private HBox createButtonLayout(Font boldFont) {
+        HBox buttonBox = new HBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        rulesLabel = new Label();
+        rulesLabel.setText("Правила\n" +
+                "1. Щоб закінчити гру введіть 'здаюсь'.\n" +
+                "3. Ви переможете, якщо комп'ютер не матиме міста для відповіді. Доступні тільки всі міста України.\n" +
+                "4. Щоб почати спочатку введіть 'заново'.\n" +
+                "5. Щоб підтвердити введення — скористайтеся кнопкою 'Зробити хід' або натисніть Enter.\n" +
+                "Вперед!!!");
+        rulesLabel.setVisible(false);
+
+        rulesButton = new Button("Правила");
+        rulesButton.setFont(boldFont);
+        rulesButton.setStyle("-fx-background-color: #008CBA; -fx-text-fill: white;");
+        rulesButton.setOnAction(e -> {
+            rulesLabel.setVisible(!rulesLabel.isVisible());
+        });
+
+        restartButton = new Button("Заново");
+        restartButton.setFont(boldFont);
+        restartButton.setStyle("-fx-background-color: #f4bb36; -fx-text-fill: white;");
+        restartButton.setOnAction(e -> {
+            restart();
+        });
+
+        finishButton = new Button("Здаюсь");
+        finishButton.setFont(boldFont);
+        finishButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        finishButton.setOnAction(e -> {
+            finished = true;
+            showAlert("Поразка", "На жаль, ви програли!",
+                    "src/main/resources/images/fail.png", new ButtonType("Закрити", ButtonBar.ButtonData.OK_DONE), new ButtonType("Заново", ButtonType.APPLY.getButtonData()));
+
+        });
+
+        buttonBox.getChildren().addAll(restartButton, rulesButton, finishButton);
+        return buttonBox;
+    }
+
+    private HBox createDescriptionAndValueLayout() {
         HBox layoutDescriptionAndValue = new HBox(20);
         layoutDescriptionAndValue.setAlignment(Pos.CENTER);
 
-        VBox layoutDescription = new VBox(44);
-        layoutDescription.setAlignment(Pos.CENTER_RIGHT);
-        labelYou = new Label("Ви:");
-        labelYou.setFont(boldFont);
-        labelComputer = new Label("Комп'ютер:");
-        labelComputer.setFont(boldFont);
-        layoutDescription.getChildren().addAll(labelYou, labelComputer);
+        VBox layoutDescription = createDescriptionLayout();
 
+        VBox layoutValue = createValueLayout();
+
+        layoutDescriptionAndValue.getChildren().addAll(layoutDescription, layoutValue);
+        return layoutDescriptionAndValue;
+    }
+
+    private VBox createValueLayout() {
         VBox layoutValue = new VBox(20);
         layoutValue.setAlignment(Pos.CENTER_LEFT);
 
@@ -89,47 +164,19 @@ public class CitiesGameUI extends Application {
         labelForComputerAnswer.setPadding(elementsInsets);
         labelForComputerAnswer.setStyle("-fx-font-size: 16px");
         layoutValue.getChildren().addAll(userInput, labelForComputerAnswer);
+        return layoutValue;
+    }
 
-        submitButton = new Button("Зробити хід");
-        submitButton.setFont(boldFont);
-        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        submitButton.setOnAction(event -> {
-            userInput.requestFocus();
-            userInput.selectAll();
-            updateGame();
-        });
+    private VBox createDescriptionLayout() {
+        VBox layoutDescription = new VBox(44);
+        layoutDescription.setAlignment(Pos.CENTER_RIGHT);
+        labelYou = new Label("Ви:");
+        labelYou.setFont(boldFont);
+        labelComputer = new Label("Комп'ютер:");
+        labelComputer.setFont(boldFont);
 
-        layoutDescriptionAndValue.getChildren().addAll(layoutDescription, layoutValue);
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.setAlignment(Pos.CENTER);
-
-        rulesLabel = new Label();
-
-        rulesButton = new Button("Правила");
-        rulesButton.setFont(boldFont);
-        rulesButton.setStyle("-fx-background-color: #008CBA; -fx-text-fill: white;");
-        rulesButton.setOnAction(e -> {
-            rulesLabel.setText("Правила\n1. Щоб закінчити гру введіть 'здаюсь'.\n2. Ви переможете, якщо комп'ютер не матиме міста для відповіді. Доступні тільки всі міста України.\n3. Щоб почати спочатку введіть 'заново'.\nВперед!!!");
-        });
-
-        restartButton = new Button("Заново");
-        restartButton.setFont(boldFont);
-        restartButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
-        restartButton.setOnAction(e -> {
-            restart();
-        });
-
-        buttonBox.getChildren().addAll(rulesButton, restartButton);
-
-        labelForMessage = new Label("");
-        mainLayout.getChildren().addAll(labelForMessage, layoutDescriptionAndValue, submitButton, buttonBox, rulesLabel);
-
-        Scene scene = new Scene(mainLayout, 700, 400);
-        scene.getRoot().setStyle("-fx-background-color: #FFFFFF;");
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        layoutDescription.getChildren().addAll(labelYou, labelComputer);
+        return layoutDescription;
     }
 
     private void updateGame() {
@@ -149,7 +196,7 @@ public class CitiesGameUI extends Application {
         if (selectedCity.equals("здаюсь")) {
             finished = true;
             showAlert("Поразка", "На жаль, ви програли!",
-                    "src/main/resources/images/fail.png", new ButtonType("Закрити", ButtonType.CLOSE.getButtonData()), new ButtonType("Заново", ButtonType.APPLY.getButtonData()));
+                    "src/main/resources/images/fail.png", new ButtonType("Закрити", ButtonBar.ButtonData.OK_DONE), new ButtonType("Заново", ButtonType.APPLY.getButtonData()));
             return;
         } else if (selectedCity.equals("заново")) {
             restart();
@@ -181,19 +228,24 @@ public class CitiesGameUI extends Application {
             if (!citiesGame.isCityOnLastLetterOfCity(selectedCityInOptional.get())) {
                 finished = true;
                 showAlert("Поразка", "На жаль, ви програли! Всі міста України на букву '" +
-                        citiesGame.getLastLetter() + "' використані.", "src/main/resources/images/fail.png", new ButtonType("Закрити", ButtonType.CLOSE.getButtonData()), new ButtonType("Заново", ButtonType.APPLY.getButtonData()));
+                        citiesGame.getLastLetter() + "' використані.", "src/main/resources/images/fail.png", new ButtonType("Закрити", ButtonBar.ButtonData.OK_DONE), new ButtonType("Заново", ButtonType.APPLY.getButtonData()));
             }
         } else {
             labelForComputerAnswer.setText("");
 
             finished = true;
             showAlert("Перемога", "Ви перемогли!!! Всі міста України на букву '" +
-                    citiesGame.getLastLetter() + "' використані.", "src/main/resources/images/pass.png", new ButtonType("Закрити", ButtonType.CLOSE.getButtonData()), new ButtonType("Ще раз", ButtonType.APPLY.getButtonData()));
+                    citiesGame.getLastLetter() + "' використані.", "src/main/resources/images/pass.png", new ButtonType("Закрити", ButtonBar.ButtonData.OK_DONE), new ButtonType("Ще раз", ButtonType.APPLY.getButtonData()));
         }
     }
 
     private Alert createAlert() {
         Alert alert = new Alert(Alert.AlertType.NONE);
+
+        alert.getDialogPane().getScene().getWindow().setOnCloseRequest(event -> {
+            restart();
+            alert.hide();
+        });
 
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.initModality(Modality.APPLICATION_MODAL);
@@ -222,12 +274,13 @@ public class CitiesGameUI extends Application {
             throw new RuntimeException(e);
         }
 
+        alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(buttonTypes);
 
         Optional<ButtonType> buttonType = alert.showAndWait();
         if (buttonType.isPresent()) {
             ButtonType type = buttonType.get();
-            if (type.getButtonData() == ButtonBar.ButtonData.CANCEL_CLOSE) {
+            if (type.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                 ((Stage) (mainWindow)).close();
             } else if (type.getButtonData() == ButtonBar.ButtonData.APPLY) {
                 restart();
