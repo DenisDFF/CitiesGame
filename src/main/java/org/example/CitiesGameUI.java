@@ -52,8 +52,9 @@ public class CitiesGameUI extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
         mainWindow = primaryStage;
+        primaryStage.getIcons().add(new Image(new FileInputStream("src/main/resources/images/map.png")));
         primaryStage.setTitle("Гра \"Міста\"");
 
         boldFont = Font.font("Arial", FontWeight.BOLD, 14);
